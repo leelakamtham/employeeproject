@@ -1,121 +1,122 @@
 
 
+const Employee = require('../models/employee.model');
 
 
-exports.findAll = function(){
+//    retrive all Employees data*********
+exports.findAll = function(req,res){
 
+  
+Employee.find()
 
-let promise = new Promise((resolve,reject)=>{
- var list = [{
+.then(employees =>
+   res.send(employees))
+   .catch(err => res.send(err));
+   
 
-    "name ":"leela",
-    "id": 567,
-    "email": "leela@g.c",
-    "mobile":98789700
-
- },
-{
-    "name ":"roshan",
-        "id": 765,
-        "email": "roshan@g.c",
-        "mobile":4567234
-    
-}]
-
-
-resolve(list);
-
-})
-
-return promise;
+ 
 }
 
-/*
-exports.findById = function(id){
 
-       
- let id = req.body.id;
+// ********  CREATE NEW EMPLOYEE DATA **********
 
-    let promise = new Promise((resolve,reject)=>{
+exports.create = function(req,res){
+
+
+   //let promise =new Promise((resolve,reject)=>{  
+
+   const employee = new Employee({
+     id:req.body.id,
+     name: req.body.name,
+    email:req.body.email,
+    mobilenum: req.body.mobilenum,
+     address:req.body.address
+});
+
+
+//save note in db
+employee.save()
+.then(data=> res.send(data))
+.catch(err => res.send(err));
+
+}
+//return Employee;
+
+//resolve(employee);
+//})
+   
+
+//return promise;
   
 
-        list =[{
-         "name ":"leela",
-         "id": 567,
-         "email": "leela@g.c",
-         "mobile":98789700
+
+
+//      ******* retrive   and return SINGLE id from database
+
+
+exports.findById = function(req,res){
+
+ 
+ const id = req.params.id;
+
+   Employee.findById(id)
+   .then(employee => {
+       if(!employee){
+           return res.send({
+               message: " not found" +req.params.id
+           })
+
+       }else{ 
+       return res.status(200).send(employee)
+       }
+})
+
      
-        },
-        {
-            "name ":"roshan",
-                "id": 765,
-                "email": "roshan@g.c",
-                "mobile":4567234
-            
-        }
-     
-     
-     ]
      
      
      
-     
-      var item = list.filter(item => item.id === 'id');
-     
-         resolve(item);
-         
-         })
-         
-         return promise;
-         }
+}
 
 
 
- exports.addEmployee = function(req){
+
+//  *******  UPDATE an EMPLOYEE based on ID
 
 
-        let promise = new Promise((resolve,reject)=>{
-         var list = [{
-        
-            name : req.body.name,
-            id: req.body.id,
-            email: req.body.email,
-            mobile:req.body.mobile
-        
-         }]
-        
-        
-        resolve(list);
-        
-        })
-        
-        return promise;
-        }
+ exports.findByIdAndUpdate = function(req,res){
 
 
 
-//
+  // Validate Request
+  if (!req.body) {
+   return res.status(400).send({
+     message: "Data to update can not be empty!"
+         });
+    }
 
- exports.updateById = function(req){
+ const id= req.params.id;
 
 
-  let promise = new Promise((resolve,reject)=>{
-    var list = [{
-            
-      name :req.body.name,
-       id: req.body.id,
-      email: req.body.email,
-      mobile: req.body.mobile
-            
-      }]
-            
-            
-      resolve(list);
-            
-            })
-            
-            return promise;
-            }
+
+
+
+
+// Find employee and update it with the request body
+Employee.findByIdAndUpdate(id, req.body, {useFindAndModify:false})
+   
+.then(employee => {
+   if(!employee) {
+       return res.status(404).send({
+           message: "employee does not exist " + id
+       });
+   }else  res.send(employee,"employee updated successfully");
+}).catch(err => res.send(err))
+
+
+ 
+}
+
+
 
 
 
@@ -125,19 +126,44 @@ exports.findById = function(id){
 
 // delete employee by id
 
-exports.delete = function(){
+exports.findOneAndDelete = function(req,res){
 
 
-    let promise = new Promise((resolve,reject)=>{
-  resolve("deleted successfully");
+   const id = req.params.id;
+   Employee.findByIdAndRemove(id)
+   .then(employee => {
+       if(!employee) {
+            res.status(404).send({
+               message: "employee not found with id " + id
+           });
+       }
+       else{ 
+       res.send({message: `employee deleted successfully! with id ${id}`});
+      }
+   }).catch(err =>{ 
+       
+        res.status(500).send({
+           message: "Could not delete note with id " + req.params.id
+       })
+         
+      
+   });
 
-    })
 
-   return promise;
 
 }
 
 
+
+
+
+/* name: req.body.name,
+email:req.body.email,
+mobilenum: req.body.mobilenum,
+ address:req.body.address
+}, {new: true})
+
 */
+
 
 

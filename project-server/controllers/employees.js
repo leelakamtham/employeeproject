@@ -2,26 +2,27 @@
 
 
 
+//const Employee = require('../models/employee.model');
 var service = require('../services/employees');
 
 exports.findAll = function(req,res){
-    service.findAll().then(result => res.send(result));
+    service.findAll(req,res);
 }
 
-exports.addEmployee = function(req,res){
-    service.addEmployee(req).then(result => res.send(result));
-}
-
-
-exports.findById = function(req){
-    service.findById().then(result => res.send(result));
+exports.create = function(req,res){
+    service.create(req,res);
 }
 
 
-exports.updateById = function(req){
-    service.updateById(req).then(result => res.send(result));
+exports.findById = function(req,res){
+    service.findById(req,res);
 }
 
-exports.delete = function(){
-    service.delete(req).then(result => res.send(result));
+
+exports.findByIdAndUpdate = function(req,res){
+    service.findByIdAndUpdate(req,res);
+}
+
+exports.findOneAndDelete = function(req,res){
+    service.findOneAndDelete(req,res);
 }

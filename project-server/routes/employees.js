@@ -7,7 +7,7 @@ var app = express.Router();
 
 
 app.get('/employees',employees.findAll);
-app.get('/employees/:id',employees.findById);
+app.get('/employees/:_id',employees.findById);
 app.post('/employee',employees.create);
 app.put('/employees/:id',employees.findByIdAndUpdate);
 

@@ -20,13 +20,13 @@ Employee.find()
 
 // ********  CREATE NEW EMPLOYEE DATA **********
 
+
+
 exports.create = function(req,res){
-
-
-   //let promise =new Promise((resolve,reject)=>{  
+//let promise =new Promise((resolve,reject)=>{  
 
    const employee = new Employee({
-     id:req.body.id,
+     _id:req.body._id,
      name: req.body.name,
     email:req.body.email,
     mobilenum: req.body.mobilenum,
@@ -57,13 +57,13 @@ employee.save()
 exports.findById = function(req,res){
 
  
- const id = req.params.id;
+ const _id = req.params._id;
 
-   Employee.findById(id)
+   Employee.findById(_id)
    .then(employee => {
        if(!employee){
            return res.send({
-               message: " not found" +req.params.id
+               message: `not found  ${req.params._id}`
            })
 
        }else{ 
@@ -106,10 +106,10 @@ Employee.findByIdAndUpdate(id, req.body, {useFindAndModify:false})
    
 .then(employee => {
    if(!employee) {
-       return res.status(404).send({
+       return res.send({
            message: "employee does not exist " + id
        });
-   }else  res.send(employee,"employee updated successfully");
+   }else  res.send(employee);
 }).catch(err => res.send(err))
 
 

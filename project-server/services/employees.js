@@ -1,11 +1,14 @@
 
 
+//const { validate } = require('../models/employee.model');
 const Employee = require('../models/employee.model');
 
 
 //    retrive all Employees data*********
 exports.findAll = function(req,res){
 
+ //  const email = req.body.email;
+ //  var condition = email ? {email:{$regex:new RegExp(email),$options:"i"}}:{};
   
 Employee.find()
 
@@ -24,6 +27,12 @@ Employee.find()
 
 exports.create = function(req,res){
 //let promise =new Promise((resolve,reject)=>{  
+
+//const error = validate(req.body);
+//if(error) return res.status(400).send(error.details[0].message);
+
+
+
 
    const employee = new Employee({
      _id:req.body._id,
@@ -109,7 +118,7 @@ Employee.findByIdAndUpdate(id, req.body, {useFindAndModify:false})
        return res.send({
            message: "employee does not exist " + id
        });
-   }else  res.send(employee);
+   }else  res.send({ message:"employee data was updated successfully."});
 }).catch(err => res.send(err))
 
 

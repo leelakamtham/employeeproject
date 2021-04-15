@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
    const Employee = mongoose.model('employee',
    mongoose.Schema( 
@@ -7,7 +8,8 @@ const mongoose = require('mongoose');
    {
         _id:{
          type:Number,
-         equired: true
+         required: true,
+         unique:true
          },
          name:{
          type: String,
@@ -42,7 +44,7 @@ schema.method("toJSON", function() {
 
      */
 
-
+ //return Employee;
 
 
 
@@ -52,9 +54,25 @@ schema.method("toJSON", function() {
 
       
    );
-   //return Employee;
+
+
+
+
+
+
+   function validateEmployee(employee){
+      const schema ={
+         _id:Joi.Number().min(2).required().unique(),
+         name:Joi.String().min(3).max(255).required(),
+         email:Joi.String().min(5).max(255).required()
+
+      };
+      return Joi.validate(employee,schema);
+   }
+  
    
 
    module.exports = Employee;
+   //module.exports = validateEmployee;
 
    
